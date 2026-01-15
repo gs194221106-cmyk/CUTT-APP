@@ -115,7 +115,8 @@
    ========================= */
         .header {
             position: absolute;
-            bottom: 10px;
+            top: 0;
+            bottom: 22.67px;
 
             left: 19.67px;
             right: 19.67px;
@@ -248,32 +249,62 @@
         .header-right {
             display: flex;
             align-items: center;
-            margin-right: 15px;
+            margin-right: 27px;
         }
 
         .settings-btn {
-            width: 32px;
-            height: 32px;
+            position: relative;
+            overflow: visible;
 
-            background: transparent;
+            width: 30px;
+            height: 24px;
+
+            background: #000;
             border: none;
-            padding: 0;
+            border-radius: 6px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            color: #030303;
             cursor: pointer;
+            z-index: 1;
         }
 
-        .settings-btn:active {
-            transform: scale(0.9);
+        /* 爱心 */
+        .settings-btn::before {
+            content: "♥";
+            color: #fff;
+            font-size: 11px;
+            line-height: 1;
+
+            position: relative;
+            z-index: 2;
         }
 
-        .settings-icon {
-            width: 19px;
-            height: 19px;
+        /* ↓↓↓ 真正“自然长出来”的尾巴 ↓↓↓ */
+        .settings-btn::after {
+            content: "";
+            position: absolute;
+
+            left: 50%;
+            bottom: -1px;
+            /* 吃进按钮一点 */
+
+            width: 12px;
+            height: 12px;
+
+            background: #000;
+
+            transform:
+                translateX(-50%) rotate(45deg);
+
+            border-radius: 3px;
+            /* ✅ 所有角都是真的圆 */
+
+            z-index: -1;
+            /* ✅ 必须在按钮下面 */
+            pointer-events: none;
         }
 
         .chat-wrapper {
@@ -534,7 +565,7 @@
         .tool-label {
             position: absolute;
 
-            top: -6px;
+            top: -5px;
             /* 保留你的设计值 */
             left: 88px;
             /* ≈ 语音按钮宽度 + gap（可微调） */
@@ -543,7 +574,7 @@
             font-weight: 500;
             font-style: italic;
 
-            font-size: 12px;
+            font-size: 11px;
             line-height: 1;
             letter-spacing: 0.4px;
 
@@ -703,8 +734,8 @@
             /* 用 padding 实现单行“视觉居中” */
             padding: 16px 40px 16px 19px;
 
-            font-size: 13px;
-            line-height: 1.4;
+            font-size: 12px;
+            line-height: 1.35;
 
             color: #333;
 
@@ -2335,25 +2366,12 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="header-right">
-                    <button class="settings-btn" aria-label="设置">
-                        <svg class="settings-icon" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M29 31.4166C30.3347 31.4166 31.4166 30.3346 31.4166 29
-                   C31.4166 27.6653 30.3347 26.5833 29 26.5833
-                   C27.6653 26.5833 26.5833 27.6653 26.5833 29
-                   C26.5833 30.3346 27.6653 31.4166 29 31.4166Z" stroke="currentColor" stroke-width="4.83333"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M29 14.5C30.3347 14.5 31.4166 13.418 31.4166 12.0833
-                   C31.4166 10.7486 30.3347 9.66663 29 9.66663
-                   C27.6653 9.66663 26.5833 10.7486 26.5833 12.0833
-                   C26.5833 13.418 27.6653 14.5 29 14.5Z" stroke="currentColor" stroke-width="4.83333"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M29 48.3333C30.3347 48.3333 31.4166 47.2513 31.4166 45.9166
-                   C31.4166 44.5819 30.3347 43.5 29 43.5
-                   C27.6653 43.5 26.5833 44.5819 26.5833 45.9166
-                   C26.5833 47.2513 27.6653 48.3333 29 48.3333Z" stroke="currentColor" stroke-width="4.83333"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
+                    <button class="settings-btn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </button>
                 </div>
             </div>
@@ -2390,7 +2408,7 @@
                     <!-- 输入框 -->
                     <div class="input-wrapper">
 
-                        <textarea class="message-input" id="messageInput" placeholder="输入消息..." rows="1"></textarea>
+                        <textarea class="message-input" id="messageInput" placeholder="iMessage…" rows="1"></textarea>
 
                         <button class="send-btn" id="sendBtn">➤</button>
                     </div>
