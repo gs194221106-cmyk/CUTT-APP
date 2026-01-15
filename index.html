@@ -98,14 +98,27 @@
         }
 
 
-
+        /* =========================
+   头部外壳（不含系统状态栏）
+   ========================= */
+        .header-card {
+            position: relative;
+            width: 100%;
+            height: 75px;
+            background: #ffffff;
+            box-shadow: inset 0 -0.5px 1px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
 
         /* =========================
    头部 - 角色状态栏
    ========================= */
         .header {
-            position: relative;
-            width: 100%;
+            position: absolute;
+            top: 0;
+
+            left: 19.67px;
+            right: 19.67px;
 
             height: 60px;
             background: #ffffff;
@@ -115,10 +128,11 @@
             align-items: center;
             justify-content: space-between;
 
-            padding-left: 33px;
-          
+            padding-left: 31px;
 
-            box-shadow: inset 0 -0.5px 1px rgba(0, 0, 0, 0.05);
+            box-shadow:
+                0 0 0.8px rgba(0, 0, 0, 0.03),
+                0 0.5px 14px rgba(0, 0, 0, 0.04);
         }
 
         .header-left {
@@ -139,8 +153,8 @@
         /* 用于承载头像 + 在线点（不参与布局） */
         .avatar-wrapper {
             position: relative;
-            width: 36px;
-            height: 36px;
+            width: 37px;
+            height: 37px;
             margin-right: 10px;
             /* ✅ 头像与文字的真实间距 */
         }
@@ -164,6 +178,8 @@
             color: white;
             font-weight: 600;
             font-size: 15px;
+
+            box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.12);
         }
 
         /* =========================
@@ -232,7 +248,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            margin-right: 33px;
+            margin-right: 27px;
         }
 
         .settings-btn {
@@ -240,7 +256,7 @@
             overflow: visible;
 
             width: 26px;
-            height: 20px;
+            height: 21px;
 
             background: #000;
             border: none;
@@ -258,7 +274,7 @@
         .settings-btn::before {
             content: "♥";
             color: #fff;
-            font-size: 10px;
+            font-size: 11px;
             line-height: 1;
 
             position: relative;
@@ -271,7 +287,7 @@
             position: absolute;
 
             left: 50%;
-            bottom: -0.5px;
+            bottom: -1px;
             /* 吃进按钮一点 */
 
             width: 12px;
