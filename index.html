@@ -115,7 +115,7 @@
    ========================= */
         .header {
             position: absolute;
-            top: 0;
+            bottom: 10px;
 
             left: 19.67px;
             right: 19.67px;
@@ -227,11 +227,11 @@
         }
 
         .chat-title {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 500;
             color: var(--header-text-color);
-            line-height: 1.2;
-            margin-bottom: 1.2px;
+            line-height: 1.1;
+            margin-bottom: 1.1px;
             text-shadow: var(--header-text-shadow);
         }
 
@@ -248,62 +248,32 @@
         .header-right {
             display: flex;
             align-items: center;
-            margin-right: 27px;
+            margin-right: 15px;
         }
 
         .settings-btn {
-            position: relative;
-            overflow: visible;
+            width: 32px;
+            height: 32px;
 
-            width: 26px;
-            height: 21px;
-
-            background: #000;
+            background: transparent;
             border: none;
-            border-radius: 7px;
+            padding: 0;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
+            color: #030303;
             cursor: pointer;
-            z-index: 1;
         }
 
-        /* 爱心 */
-        .settings-btn::before {
-            content: "♥";
-            color: #fff;
-            font-size: 11px;
-            line-height: 1;
-
-            position: relative;
-            z-index: 2;
+        .settings-btn:active {
+            transform: scale(0.9);
         }
 
-        /* ↓↓↓ 真正“自然长出来”的尾巴 ↓↓↓ */
-        .settings-btn::after {
-            content: "";
-            position: absolute;
-
-            left: 50%;
-            bottom: -1px;
-            /* 吃进按钮一点 */
-
-            width: 12px;
-            height: 12px;
-
-            background: #000;
-
-            transform:
-                translateX(-50%) rotate(45deg);
-
-            border-radius: 3px;
-            /* ✅ 所有角都是真的圆 */
-
-            z-index: -1;
-            /* ✅ 必须在按钮下面 */
-            pointer-events: none;
+        .settings-icon {
+            width: 19px;
+            height: 19px;
         }
 
         .chat-wrapper {
@@ -497,7 +467,7 @@
         .input-area {
             position: relative;
             width: 100%;
-            height: 105px;
+            height: 108px;
             /* 👈 这里，88 → 96 */
             background: #ffffff;
             box-shadow: inset 0 0.5px 1px rgba(0, 0, 0, 0.05);
@@ -519,7 +489,7 @@
             left: 0;
             right: 0;
 
-            bottom: 32px;
+            bottom: 34px;
             /* 209 ÷ 3 */
 
             display: flex;
@@ -2365,12 +2335,25 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="header-right">
-                    <button class="settings-btn">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <button class="settings-btn" aria-label="设置">
+                        <svg class="settings-icon" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M29 31.4166C30.3347 31.4166 31.4166 30.3346 31.4166 29
+                   C31.4166 27.6653 30.3347 26.5833 29 26.5833
+                   C27.6653 26.5833 26.5833 27.6653 26.5833 29
+                   C26.5833 30.3346 27.6653 31.4166 29 31.4166Z" stroke="currentColor" stroke-width="4.83333"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M29 14.5C30.3347 14.5 31.4166 13.418 31.4166 12.0833
+                   C31.4166 10.7486 30.3347 9.66663 29 9.66663
+                   C27.6653 9.66663 26.5833 10.7486 26.5833 12.0833
+                   C26.5833 13.418 27.6653 14.5 29 14.5Z" stroke="currentColor" stroke-width="4.83333"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M29 48.3333C30.3347 48.3333 31.4166 47.2513 31.4166 45.9166
+                   C31.4166 44.5819 30.3347 43.5 29 43.5
+                   C27.6653 43.5 26.5833 44.5819 26.5833 45.9166
+                   C26.5833 47.2513 27.6653 48.3333 29 48.3333Z" stroke="currentColor" stroke-width="4.83333"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </button>
                 </div>
             </div>
