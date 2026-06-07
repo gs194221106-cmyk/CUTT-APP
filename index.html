@@ -3493,54 +3493,43 @@
         }
 
         //开始录音。
-        async function startVoiceRecord() {
-            try {
-                alert(
-                    "支持情况测试：" +
-                    "\nwebm=" + MediaRecorder.isTypeSupported('audio/webm') +
-                    "\nwebm opus=" + MediaRecorder.isTypeSupported('audio/webm;codecs=opus') +
-                    "\nmp4=" + MediaRecorder.isTypeSupported('audio/mp4') +
-                    "\nmp4 aac=" + MediaRecorder.isTypeSupported('audio/mp4;codecs=mp4a.40.2')
-                );
+async function startVoiceRecord() {
+    try {
+        recordStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                recordStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        let options = {};
 
-                let options = {};
-
-                if (MediaRecorder.isTypeSupported('audio/mp4;codecs=mp4a.40.2')) {
-                    options = { mimeType: 'audio/mp4;codecs=mp4a.40.2' };
-                } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-                    options = { mimeType: 'audio/mp4' };
-                } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-                    options = { mimeType: 'audio/webm;codecs=opus' };
-                } else {
-                    options = { mimeType: 'audio/webm' };
-                }
-
-                alert("本次实际使用格式：" + options.mimeType);
-
-                mediaRecorder = new MediaRecorder(recordStream, options);
-
-                audioChunks = [];
-                recordStartTime = Date.now();
-
-                mediaRecorder.ondataavailable = (e) => {
-                    if (e.data && e.data.size > 0) {
-                        audioChunks.push(e.data);
-                    }
-                };
-
-                mediaRecorder.start();
-
-            } catch (err) {
-                console.error('麦克风权限被拒绝', err);
-                isRecording = false;
-                alert('需要麦克风权限才能录音：' + err.message);
-            }
+        if (MediaRecorder.isTypeSupported('audio/mp4;codecs=mp4a.40.2')) {
+            options = { mimeType: 'audio/mp4;codecs=mp4a.40.2' };
+        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+            options = { mimeType: 'audio/mp4' };
+        } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+            options = { mimeType: 'audio/webm;codecs=opus' };
+        } else {
+            options = { mimeType: 'audio/webm' };
         }
 
+        mediaRecorder = new MediaRecorder(recordStream, options);
 
-        //停止录音。
+        audioChunks = [];
+        recordStartTime = Date.now();
+
+        mediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) {
+                audioChunks.push(e.data);
+            }
+        };
+
+        mediaRecorder.start();
+
+    } catch (err) {
+        console.error('麦克风权限被拒绝', err);
+        isRecording = false;
+        alert('需要麦克风权限才能录音');
+    }
+}
+
+
         //停止录音。
         function stopVoiceRecord() {
             return new Promise((resolve, reject) => {
