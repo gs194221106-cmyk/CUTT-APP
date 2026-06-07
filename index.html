@@ -3966,6 +3966,12 @@
                 msg.content.audio.startsWith('data:audio')
             ) {
                 audio.src = msg.content.audio;
+
+                alert(
+                    "canPlay webm=" + audio.canPlayType('audio/webm') +
+                    "\ncanPlay mp4=" + audio.canPlayType('audio/mp4') +
+                    "\ncanPlay m4a=" + audio.canPlayType('audio/mp4; codecs=mp4a.40.2')
+                );
             } else {
                 voiceContent.classList.add('voice-invalid');
             }
