@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="CATT">
     <title>私密聊天室 - 韩系风格版</title>
     <style>
@@ -20,11 +20,13 @@
             --wechat-time: #B2B2B2;
             --bubble-user: #E7F2FF;
             --bubble-bot: #FFFFFF;
-            --light-blue: var(--bubble-user);
-            --quote-bg: #FAFAFA;
+            --light-pink: #FFB6C1;
+            --input-pink: #FFF5F5;
+            --quote-bg: #F5F5F5;
             --quote-border-user: #FFCECE;
-            --quote-border-bot: var(--bubble-user);
+            --quote-border-bot: #FFCECE;
             --korea-primary: #FFB6C1;
+            --icon-pink: #FF8FA3;
 
             /* 新增：角色信息颜色变量 - 默认浅色主题 */
             --header-text-color: rgba(255, 255, 255, 0.9);
@@ -54,10 +56,6 @@
             --panel-width: 100vw;
             --panel-height: 100vh;
             --panel-padding: 20px;
-
-            /*聊天页面头像*/
-            --avatar-size: 32px;
-            --avatar-gap: 12px;
 
         }
 
@@ -97,31 +95,29 @@
             flex-direction: column;
         }
 
-
-        /* =========================
-   头部外壳（不含系统状态栏）
-   ========================= */
+        /* 头部外壳（不含系统状态栏） */
         .header-card {
             position: relative;
             width: 100%;
-            height: 75px;
+            height: 154.33px;
+            /* 154.33 - iPhone 15 状态栏 59 */
             background: #ffffff;
+
             box-shadow: inset 0 -0.5px 1px rgba(0, 0, 0, 0.05);
+
             flex-shrink: 0;
         }
 
-        /* =========================
-   头部 - 角色状态栏
-   ========================= */
+        /* 头部 - 角色状态栏（最终正确版，不再重复状态栏高度） */
         .header {
             position: absolute;
-            top: 0;
             bottom: 22.67px;
 
             left: 19.67px;
             right: 19.67px;
 
-            height: 60px;
+            height: 72px;
+
             background: #ffffff;
             border-radius: 14px;
 
@@ -129,7 +125,10 @@
             align-items: center;
             justify-content: space-between;
 
+            /* 关键：让内部从“真实内容起点”开始 */
             padding-left: 31px;
+            /* 93 ÷ 3，头像到 header 左边距 */
+            padding-right: 29px;
 
             box-shadow:
                 0 0 0.8px rgba(0, 0, 0, 0.03),
@@ -142,33 +141,19 @@
             flex: 1;
         }
 
-        /* =========================
-   头像 + 状态整体容器
-   ========================= */
         .avatar-container {
             display: flex;
             align-items: center;
             cursor: pointer;
         }
 
-        /* 用于承载头像 + 在线点（不参与布局） */
-        .avatar-wrapper {
-            position: relative;
-            width: 37px;
-            height: 37px;
-            margin-right: 10px;
-            /* ✅ 头像与文字的真实间距 */
-        }
-
-        /* =========================
-   头像本体（保持原样）
-   ========================= */
         .avatar {
-            width: 100%;
-            height: 100%;
+            width: 42.33px;
+            height: 42.33px;
 
             border-radius: 50%;
             object-fit: cover;
+            /* 上传头像裁剪，不拉伸 */
 
             background-color: var(--light-pink);
 
@@ -180,46 +165,9 @@
             font-weight: 600;
             font-size: 15px;
 
-            box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.12);
+            margin-right: 11.33px;
         }
 
-        /* =========================
-   在线状态点（白圈 + 绿点）
-   ========================= */
-        .online-status {
-            position: absolute;
-            right: -2px;
-            bottom: 1px;
-
-            width: 11px;
-            height: 11px;
-
-            background: #ffffff;
-            /* 白色外圈 */
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.04);
-        }
-
-        .online-status::after {
-            content: "";
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-
-            /* ✅ iOS / 微信系 在线绿 */
-            background-color: #4CD964;
-
-            box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.25);
-        }
-
-
-        /* =========================
-   角色信息文字
-   ========================= */
         .chat-info {
             display: flex;
             flex-direction: column;
@@ -227,41 +175,47 @@
             transform: translateY(0.73px);
         }
 
+        /* 修改：角色名字字体大小和间距 */
         .chat-title {
-            font-size: 12px;
+            font-size: 13px;
+            /* ↓ 更 iOS */
             font-weight: 500;
+            /* 不要太粗 */
             color: var(--header-text-color);
-            line-height: 1.1;
-            margin-bottom: 1.1px;
+
+            line-height: 1.2;
+            margin-bottom: 1.2px;
+
             text-shadow: var(--header-text-shadow);
         }
 
+        /* 修改：角色状态字体大小 */
         .chat-status {
-            font-size: 7px;
+            font-size: 9px;
+            /* ↓ 更轻 */
             line-height: 1.3;
+
             color: var(--header-status-color);
             text-shadow: var(--header-text-shadow);
         }
 
-        /* =========================
-   右侧按钮
-   ========================= */
         .header-right {
             display: flex;
             align-items: center;
-            margin-right: 27px;
+            margin-right: 10px;
         }
+
 
         .settings-btn {
             position: relative;
             overflow: visible;
 
-            width: 30px;
-            height: 24px;
+            width: 36px;
+            height: 28px;
 
             background: #000;
             border: none;
-            border-radius: 6px;
+            border-radius: 7px;
 
             display: flex;
             align-items: center;
@@ -275,7 +229,7 @@
         .settings-btn::before {
             content: "♥";
             color: #fff;
-            font-size: 11px;
+            font-size: 14px;
             line-height: 1;
 
             position: relative;
@@ -288,7 +242,7 @@
             position: absolute;
 
             left: 50%;
-            bottom: -1px;
+            bottom: -2px;
             /* 吃进按钮一点 */
 
             width: 12px;
@@ -335,52 +289,51 @@
             -webkit-overflow-scrolling: touch;
 
             padding: 12px;
-            padding-bottom: 12px;
+            padding-bottom: 20px;
             /* ✅ 比 100px 小一档 */
 
             background: transparent;
         }
 
-        .chat-area {
-            --message-avatar-size: 32px;
-            --message-avatar-gap: 10px;
-        }
-
-        /* 气泡容器（头像 + 气泡整体） */
+        /* 气泡容器 */
         .message-container {
             display: flex;
-            margin-bottom: 17.5px;
+            margin-bottom: 12px;
+            max-width: 100%;
 
-            max-width: 85%;
-            /* ⭐ 关键：整体限制 */
             align-items: flex-start;
+            /* ✅ 关键：禁止子项被拉伸算宽 */
         }
 
         .user-container {
             margin-left: auto;
-            margin-right: 5px;
+            margin-right: 15px;
             justify-content: flex-end;
         }
 
         .bot-container {
             margin-right: auto;
-            margin-left: 5px;
+            margin-left: 15px;
         }
 
+        /* 修改：气泡内边距 + 字体 + 稳定宽度 */
         .message {
             display: inline-block;
 
-            padding: 8px 12px;
-            border-radius: 14px;
+            padding: 10px 14px;
+            border-radius: 18px;
             position: relative;
             animation: fadeIn 0.3s ease;
 
-            font-size: 12.5px;
-            line-height: 1.35;
+            font-size: 13px;
+            line-height: 1.4;
 
-            max-width: calc(100% - var(--avatar-size) - var(--avatar-gap));
+            /* ✅ 最稳定、不折磨人的组合 */
+            max-width: 85%;
             white-space: pre-wrap;
             word-break: break-word;
+
+            /* ❌ 不要 inline-size / fit-content */
         }
 
         @keyframes fadeIn {
@@ -395,60 +348,125 @@
             }
         }
 
-        /* ===== 图片 / 表情包消息：彻底移除气泡 ===== */
-        .message.no-bubble,
-        .message.no-bubble.user-message,
-        .message.no-bubble.bot-message {
-            background: none !important;
-            padding: 0 !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-        }
-
-        /* ===== 聊天消息头像 ===== */
-        .message-avatar {
-            width: var(--message-avatar-size);
-            height: var(--message-avatar-size);
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0;
-            background: #ddd;
-
-            display: flex;
+        /* =========================
+   语音内容行（不控制高度）
+========================= */
+        .voice-content {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
 
-            font-size: 13px;
-            font-weight: 500;
-            color: #fff;
+            padding: 0 12px;
+            box-sizing: border-box;
 
-            transform: translateY(1px);
+            /* ✅ 关键：内容靠右 */
+            justify-content: flex-end;
+
+            white-space: nowrap;
         }
 
-        /* 头像里的图片 */
-        .message-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        /* =========================
+   秒数（左）
+========================= */
+        .voice-duration {
+            font-size: 10px;
+            line-height: 1;
+            /* 只影响自身 */
+            margin-right: 6px;
+            white-space: nowrap;
+            color: #333;
         }
 
-        /* 用户消息：头像在右 */
-        .user-container {
-            flex-direction: row;
+        /* =========================
+   声波图标容器
+========================= */
+        .voice-icon {
+            display: inline-flex;
+            align-items: center;
+
+            line-height: 0;
+            /* ⭐ 关键：隔离 SVG 行高 */
         }
 
-        .user-container .message-avatar {
-            margin-left: var(--message-avatar-gap);
+        /* =========================
+   SVG 声波本体
+========================= */
+        .voice-svg {
+            display: block;
+            /* ⭐ 不参与行高计算 */
+            width: 24px;
+            height: 18px;
         }
 
-        /* 对方消息：头像在左 */
-        .bot-container {
-            flex-direction: row;
+        /* =========================
+   声波样式
+========================= */
+        .voice-svg .wave {
+            fill: none;
+            stroke: #333;
+            stroke-width: 2;
+            stroke-linecap: round;
         }
 
-        .bot-container .message-avatar {
-            margin-right: var(--message-avatar-gap);
+        .voice-svg .w1 {
+            opacity: 0.6;
         }
+
+        .voice-svg .w2 {
+            opacity: 0.8;
+        }
+
+        .voice-svg .w3 {
+            opacity: 1;
+        }
+
+        /* =========================
+   朝左 (((
+========================= */
+        .flip-left {
+            transform: scaleX(-1);
+            transform-origin: center;
+        }
+
+
+        /* ===== 播放动画（微信风）===== */
+        .voice-content.playing .wave {
+            opacity: 0.3;
+            animation: waveBlink 1s infinite ease-in-out;
+        }
+
+        .voice-content.playing .w1 {
+            animation-delay: 0s;
+        }
+
+        .voice-content.playing .w2 {
+            animation-delay: 0.15s;
+        }
+
+        .voice-content.playing .w3 {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes waveBlink {
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        /* 失效语音 */
+        .voice-content.voice-invalid {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+
 
         .user-message {
             background-color: var(--bubble-user);
@@ -466,31 +484,20 @@
                 0 0.5px 1.5px rgba(0, 0, 0, 0.035);
         }
 
-
-        /* ===== 时间分割线（胶囊气泡版 · 精修小号） ===== */
+        /* 时间分割线 */
         .time-divider {
             text-align: center;
-            margin: 12px 0;
-            /* ⬅ 上下间距略收 */
-            font-size: 9px;
-            /* ⬅ 比消息再小一档 */
-            color: #8e8e93;
-
+            margin: 15px 0;
+            font-size: 11px;
+            color: var(--wechat-time);
             position: relative;
         }
 
         .time-divider span {
-            display: inline-block;
-
-            padding: 2px 8px;
-            /* ⬅ 关键：明显压扁高度 */
-            border-radius: 999px;
-
-            /* ✅ 实体浅灰，不透明 */
-            background-color: #ededed;
-
-            line-height: 1.4;
-            /* ⬅ 防止字体撑高 */
+            background-color: transparent;
+            padding: 0 10px;
+            position: relative;
+            z-index: 2;
         }
 
 
@@ -498,7 +505,7 @@
         .input-area {
             position: relative;
             width: 100%;
-            height: 108px;
+            height: 142px;
             /* 👈 这里，88 → 96 */
             background: #ffffff;
             box-shadow: inset 0 0.5px 1px rgba(0, 0, 0, 0.05);
@@ -520,7 +527,7 @@
             left: 0;
             right: 0;
 
-            bottom: 34px;
+            bottom: 62px;
             /* 209 ÷ 3 */
 
             display: flex;
@@ -565,7 +572,7 @@
         .tool-label {
             position: absolute;
 
-            top: -5px;
+            top: -6px;
             /* 保留你的设计值 */
             left: 88px;
             /* ≈ 语音按钮宽度 + gap（可微调） */
@@ -574,7 +581,7 @@
             font-weight: 500;
             font-style: italic;
 
-            font-size: 11px;
+            font-size: 12px;
             line-height: 1;
             letter-spacing: 0.4px;
 
@@ -591,113 +598,6 @@
             line-height: 1;
         }
 
-        /* =========================
-   Tool Panel（严格 ÷3 还原版）
-   ========================= */
-        .tool-panel {
-            position: fixed;
-            /* 🔥 改这里：出生点 */
-            top: 23%;
-            left: 67%;
-            transform: translate(-50%, -50%);
-            /* ↑ 从“中心点”出生，而不是底部 */
-            z-index: 9999;
-
-            /* ✅ 设计稿 ÷3 后的固定尺寸 */
-            width: 185px;
-            height: 57px;
-
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(4px);
-
-            /* ✅ 圆角 ÷3 */
-            border-radius: 22px;
-
-            /* ✅ padding ÷3 */
-            padding: 7px 9px;
-
-            /* ✅ 阴影 */
-            box-shadow:
-                0 4px 20px rgba(0, 0, 0, 0.035),
-                0 1.5px 6px rgba(0, 0, 0, 0.025);
-
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        /* 隐藏状态 */
-        .tool-panel.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: translate(-50%, 20px);
-        }
-
-        .tool-panel-header {
-            height: 10px;
-            cursor: grab;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .tool-drag-bar {
-            width: 23px;
-            height: 1.5px;
-            border-radius: 1px;
-            background: rgba(0, 0, 0, 0.15);
-
-            transform: translateY(-4.5px);
-            /* 👈 向上提，1~3px 自己微调 */
-        }
-
-        .tool-panel-header:active {
-            cursor: grabbing;
-        }
-
-
-        .tool-panel-inner {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-
-            margin-top: 0px;
-            /* 👈 往上贴一点 */
-        }
-
-
-        .tool-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            /* ⬅️ 图标和文字的距离要克制 */
-            gap: 3px;
-
-            background: none;
-            border: none;
-            padding: 0;
-
-            cursor: pointer;
-
-            color: #111;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
-
-            /* ⬅️ 文字一定要退后 */
-            font-size: 6px;
-            font-weight: 500;
-            opacity: 0.75;
-        }
-
-        /* SVG 统一大小（这个值是对的，不用再动） */
-        .tool-btn svg {
-            width: 17px;
-            height: 17px;
-        }
-
-        /* 点击反馈 */
-        .tool-btn:active {
-            transform: scale(0.94);
-            opacity: 0.8;
-        }
 
         /* ===== 输入框主体（基于原始 50px） ===== */
         .input-wrapper {
@@ -734,8 +634,8 @@
             /* 用 padding 实现单行“视觉居中” */
             padding: 16px 40px 16px 19px;
 
-            font-size: 12px;
-            line-height: 1.35;
+            font-size: 13px;
+            line-height: 1.4;
 
             color: #333;
 
@@ -765,11 +665,48 @@
             padding: 0;
         }
 
+        /* ===== Home Indicator 上方的文本标签 ===== */
+        .input-footer-label {
+            position: fixed;
+
+            bottom: 21px;
+            /* ≈ 89 / 3，保留你的视觉定位 */
+            left: 0;
+            right: 0;
+
+            height: 24px;
+            /* 字体高度参考，保留 */
+            line-height: 24px;
+
+            text-align: center;
+
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
+            /* SemiBold（第一推荐） */
+            font-style: normal;
+
+            font-size: 12px;
+            letter-spacing: 0.2px;
+            /* 比 TOOL 稍微收一点，更像 Eina 01 */
+            color: #bdbdbd;
+
+            background: transparent;
+            pointer-events: none;
+
+            z-index: 5;
+        }
 
         /* 修改：输入栏placeholder字体大小 */
         .message-input::placeholder {
             font-size: 12px;
             color: var(--wechat-time);
+        }
+
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
         }
 
         /* 设置面板 - 修改：全屏白色背景 */
@@ -1493,45 +1430,27 @@
             display: none !important;
         }
 
-        /* ===== Sticker Picker（跟随 Tool Panel 底部出现） ===== */
+        /* 修改：表情包选择框调整 - 放大一丢丢，间距更小 */
         .sticker-picker {
             position: absolute;
-
-            top: 100%;
-            /* 🔥 从 panel 底部出生 */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 99%;
-            /* 🔥 和 panel 同宽 */
-
-            margin-top: 6px;
-            /* panel 与 sticker 的间距 */
-
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(12px);
-
-            border-radius: 20px;
-            padding: 12px;
-
-            height: 160px;
-            /* 比你原来 150 略大一点 */
+            bottom: 70px;
+            left: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: calc(100% - 30px);
+            height: 150px;
             overflow-y: auto;
             overflow-x: hidden;
-
-            box-shadow:
-                0 3px 14px rgba(0, 0, 0, 0.04),
-                0 1px 4px rgba(0, 0, 0, 0.025);
-
-            z-index: 10;
-
+            z-index: 5;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
-            gap: 6px;
-            /* 🔥 比之前更紧凑 */
+            grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+            /* 放大一点 */
+            gap: 8px;
+            /* 间距更小 */
             align-content: flex-start;
-
             touch-action: pan-y;
-            box-sizing: border-box;
         }
 
         .multi-file-label {
@@ -1945,9 +1864,9 @@
         }
 
         .main-content {
-            font-size: 12.5px;
+            font-size: 13px;
             color: var(--wechat-text);
-            line-height: 1.35;
+            line-height: 1.4;
         }
 
         /* 优化图片上传区域 */
@@ -2309,17 +2228,6 @@
             opacity: 0.9;
         }
 
-        /* ===== 引用中的图片 / 表情包：强制缩略图限高（最终版） ===== */
-        .quoted-content .quoted-text img.quoted-image {
-            max-height: 64px !important;
-            max-width: 96px !important;
-            width: auto !important;
-            height: auto !important;
-            object-fit: cover;
-            border-radius: 6px;
-            display: block;
-        }
-
         html,
         body {
             height: 100%;
@@ -2349,24 +2257,15 @@
             <div class="header">
                 <div class="header-left">
                     <div class="avatar-container" id="avatarContainer">
-
-                        <!-- 头像 + 在线状态包裹 -->
-                        <div class="avatar-wrapper">
-                            <div class="avatar" id="botAvatar">
-                                <!-- 头像图片将在这里显示 -->
-                            </div>
-
-                            <!-- 在线状态点 -->
-                            <span class="online-status"></span>
+                        <div class="avatar" id="botAvatar">
+                            <!-- 头像图片将在这里显示 -->
                         </div>
-
                         <div class="chat-info">
                             <div class="chat-title" id="botName">聊天伙伴</div>
                             <div class="chat-status" id="chatStatus">在线</div>
                         </div>
                     </div>
                 </div>
-
                 <div class="header-right">
                     <button class="settings-btn">
                         <span></span>
@@ -2387,170 +2286,41 @@
         </div>
 
         <!-- 底部输入区（系统层，纯白） -->
-        <div class="input-card">
+        <div class="input-area">
 
-            <div class="input-area">
-                <div class="input-btn">
-                    <!-- ⭐ TOOL 卡在“输入框”上 -->
-                    <div class="tool-label" id="toolToggle">
-                        TOOL <span class="tool-arrow">^</span>
-                    </div>
-                    <!-- 语音 -->
-                    <!-- 语音 -->
-                    <button id="voiceBtn" class="voice-btn" type="button" aria-label="语音">
-                        <svg class="voice-icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="6" cy="12" r="2"></circle>
-                            <path d="M11 9a4 4 0 0 1 0 6"></path>
-                            <path d="M14 6a7 7 0 0 1 0 12"></path>
-                        </svg>
-                    </button>
+            <div class="input-btn">
+                <!-- ⭐ TOOL 卡在“输入框”上 -->
+                <div class="tool-label">
+                    TOOL <span class="tool-arrow">^</span>
+                </div>
+                <!-- 语音 -->
+                <!-- 语音 -->
+                <button id="voiceBtn" class="voice-btn" type="button" aria-label="语音">
+                    <svg class="voice-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="6" cy="12" r="2"></circle>
+                        <path d="M11 9a4 4 0 0 1 0 6"></path>
+                        <path d="M14 6a7 7 0 0 1 0 12"></path>
+                    </svg>
+                </button>
 
-                    <!-- 输入框 -->
-                    <div class="input-wrapper">
+                <!-- 输入框 -->
+                <div class="input-wrapper">
 
-                        <textarea class="message-input" id="messageInput" placeholder="iMessage…" rows="1"></textarea>
+                    <textarea class="message-input" id="messageInput" placeholder="输入消息..." rows="1"></textarea>
 
-                        <button class="send-btn" id="sendBtn">➤</button>
-                    </div>
+                    <button class="send-btn" id="sendBtn">➤</button>
                 </div>
             </div>
         </div>
 
-        <!-- =========================
-     Tool Floating Panel 可移动工具窗口
-     ========================= -->
-        <div id="tool-panel" class="tool-panel hidden">
-            <!-- Image 上传 input（必须存在，JS 才能 click） -->
-            <input type="file" id="imageFileInput" class="hidden-file-input" accept="image/*" />
-            <!-- 🔹 可拖拽头部（唯一拖拽区） -->
-            <div class="tool-panel-header" id="toolPanelDrag">
-                <!-- 可选：iOS 风格小横条 -->
-                <div class="tool-drag-bar"></div>
-            </div>
-            <div class="sticker-picker hidden" id="stickerPicker">
-                <!-- 表情包选择器内容 -->
-            </div>
-            <!-- 🔹 工具按钮区（不可拖拽） -->
-            <div class="tool-panel-inner">
+        <!-- Home Indicator 上方的静态标签 -->
+        <div class="input-footer-label">
+            • Have a nice day •
+        </div>
 
-
-                <!-- Sticker -->
-                <button class="tool-btn tool-sticker-btn">
-                    <!-- Sticker SVG -->
-                    <svg class="tool-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 26C14 26 17 30 22 30C27 30 30 26 30 26
-         M16 16H16.02
-         M28 16H28.02
-         M42 22C42 33.0457 33.0457 42 22 42
-         C10.9543 42 2 33.0457 2 22
-         C2 10.9543 10.9543 2 22 2
-         C33.0457 2 42 10.9543 42 22Z" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-
-                    <span>Sticker</span>
-                </button>
-
-                <!-- Image -->
-                <button class="tool-btn tool-image-btn">
-                    <!-- Image SVG -->
-                    <svg class="tool-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M35 13H35.02
-         M14 4H34C39.5228 4 44 8.47715 44 14V34
-         C44 39.5228 39.5228 44 34 44H14
-         C8.47715 44 4 39.5228 4 34V14
-         C4 8.47715 8.47715 4 14 4Z
-         M32 22.74C32.2468 24.4045 31.9625 26.1044
-         31.1875 27.598C30.4125 29.0916
-         29.1863 30.3028 27.6833 31.0593
-         C26.1802 31.8159 24.4769 32.0792
-         22.8156 31.8119C21.1543 31.5445
-         19.6195 30.7602 18.4297 29.5703
-         C17.2398 28.3805 16.4555 26.8457
-         16.1881 25.1844C15.9208 23.5231
-         16.1841 21.8198 16.9407 20.3167
-         C17.6972 18.8137 18.9084 17.5875
-         20.402 16.8125C21.8956 16.0375
-         23.5955 15.7532 25.26 16
-         C26.9578 16.2518 28.5297 17.0429
-         29.7434 18.2566C30.9571 19.4703
-         31.7482 21.0422 32 22.74Z" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-
-                    <span>Image</span>
-                </button>
-
-                <!-- Call -->
-                <button class="tool-btn tool-call-btn">
-                    <!-- Call SVG -->
-                    <svg class="tool-icon" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M27.8762 10
-         C29.8297 10.3811 31.625 11.3365 33.0324 12.7439
-         C34.4397 14.1512 35.3951 15.9465 35.7762 17.9
-         M27.8762 2
-         C31.9348 2.45087 35.7194 4.26835 38.6087 7.15402
-         C41.498 10.0397 43.3203 13.822 43.7762 17.88
-         M41.7762 33.84V39.84
-         C41.7785 40.397 41.6644 40.9483 41.4413 41.4587
-         C41.2181 41.9691 40.8908 42.4272 40.4804 42.8037
-         C40.0699 43.1803 39.5854 43.467 39.0577 43.6454
-         C38.5301 43.8239 37.971 43.8901 37.4162 43.84
-         C31.2619 43.1713 25.3502 41.0683 20.1562 37.7
-         C15.3239 34.6293 11.2269 30.5323 8.15623 25.7
-         C4.77619 20.4824 2.67272 14.542 2.01623 8.36
-         C1.96625 7.80693 2.03198 7.24952 2.20923 6.72325
-         C2.38649 6.19698 2.67138 5.71338 3.04577 5.30324
-         C3.42016 4.89311 3.87584 4.56542 4.38382 4.34104
-         C4.89179 4.11667 5.44091 4.00052 5.99623 4
-         H11.9962
-         C12.9668 3.99045 13.9078 4.33416 14.6438 4.96707
-         C15.3797 5.59997 15.8604 6.47889 15.9962 7.44
-         C16.2495 9.36013 16.7191 11.2455 17.3962 13.06
-         C17.6653 13.7758 17.7236 14.5538 17.564 15.3018
-         C17.4045 16.0497 17.034 16.7362 16.4962 17.28
-         L13.9562 19.82
-         C16.8033 24.8271 20.9491 28.9729 25.9562 31.82
-         L28.4962 29.28
-         C29.04 28.7423 29.7265 28.3717 30.4745 28.2122
-         C31.2224 28.0527 32.0004 28.1109 32.7162 28.38
-         C34.5308 29.0571 36.4161 29.5268 38.3362 29.78
-         C39.3078 29.9171 40.195 30.4064 40.8293 31.155
-         C41.4636 31.9036 41.8006 32.8592 41.7762 33.84Z" stroke="currentColor" stroke-width="3.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-
-                    <span>Call</span>
-                </button>
-
-                <!-- Like -->
-                <button class="tool-btn tool-like-btn">
-                    <!-- Like SVG -->
-                    <svg class="tool-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M41.68 9.21999
-         C40.6585 8.198 39.4456 7.38728 38.1107 6.83416
-         C36.7758 6.28103 35.345 5.99634 33.9 5.99634
-         C32.455 5.99634 31.0242 6.28103 29.6893 6.83416
-         C28.3544 7.38728 27.1415 8.198 26.12 9.21999
-         L24 11.34
-         L21.88 9.21999
-         C19.8166 7.15661 17.0181 5.99741 14.1 5.99741
-         C11.1819 5.99741 8.38338 7.15661 6.31999 9.21999
-         C4.25661 11.2834 3.09741 14.0819 3.09741 17
-         C3.09741 19.9181 4.25661 22.7166 6.31999 24.78
-         L24 42.46
-         L41.68 24.78
-         C42.702 23.7585 43.5127 22.5456 44.0658 21.2107
-         C44.6189 19.8758 44.9036 18.445 44.9036 17
-         C44.9036 15.555 44.6189 14.1242 44.0658 12.7893
-         C43.5127 11.4544 42.702 10.2415 41.68 9.21999Z" stroke="currentColor" stroke-width="3.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-
-                    <span>Like</span>
-                </button>
-
-            </div>
+        <!-- 其余HTML内容保持不变 -->
+        <div class="sticker-picker hidden" id="stickerPicker">
+            <!-- 表情包选择器内容 -->
         </div>
 
         <!-- 好友面板 -->
@@ -2626,8 +2396,8 @@
                 <div class="setting-section">
                     <h3>角色头像设置</h3>
                     <div class="avatar-preview">
-                        <div class="avatar-wrapper avatar-lg">
-                            <div class="avatar" id="avatarPreview"></div>
+                        <div class="avatar" id="avatarPreview">
+                            <!-- 头像预览 -->
                         </div>
                     </div>
                     <div class="file-input-container">
@@ -2635,27 +2405,7 @@
                         <button class="capsule-btn" id="uploadAvatarBtn">从本地导入头像</button>
                     </div>
                     <div class="compression-info">
-                        头像将自动裁剪为正方形并以高清尺寸保存
-                    </div>
-                </div>
-
-                <!-- 用户头像设置 -->
-                <div class="setting-section">
-                    <h3>用户头像设置</h3>
-
-                    <div class="avatar-preview">
-                        <div class="avatar-wrapper avatar-lg">
-                            <div class="avatar" id="userAvatarPreview"></div>
-                        </div>
-                    </div>
-
-                    <div class="file-input-container">
-                        <input type="file" id="userAvatarFileInput" class="hidden-file-input" accept="image/*">
-                        <button class="capsule-btn" id="uploadUserAvatarBtn">从本地导入头像</button>
-                    </div>
-
-                    <div class="compression-info">
-                        头像将自动裁剪为正方形并以高清尺寸保存
+                        头像将自动裁剪为48x48像素，不会变形
                     </div>
                 </div>
 
@@ -2878,18 +2628,16 @@
         // ==========================
         // Voice Record Global State
         // ==========================
-        let lastRenderedDate = null;
-        //let mediaRecorder = null;
-        //let audioChunks = [];
-        //let recordStartTime = 0;
-        //let recordStream = null; // ✅ 新增：保存 stream
-        //let isRecording = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let recordStartTime = 0;
+        let recordStream = null; // ✅ 新增：保存 stream
+        let isRecording = false;
 
         // 初始化数据
         let appData = {
             currentFriendId: "friend1",
             userName: "用户",
-            userAvatarImage: null,   // ⭐ 新增：用户头像
             userStickers: [],
             friends: {
                 "friend1": {
@@ -2917,14 +2665,14 @@
         const chatArea = document.getElementById('chatArea');
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
-        // const voiceBtn = document.getElementById('voiceBtn'); // 👈 就加在这一堆里
+        const voiceBtn = document.getElementById('voiceBtn'); // 👈 就加在这一堆里
         const settingsBtn = document.querySelector('.settings-btn');
         const settingsPanel = document.getElementById('settingsPanel');
         const closeSettings = document.querySelector('.close-settings');
-        const stickerBtn = document.querySelector('.tool-sticker-btn');
-        const imageBtn = document.querySelector('.tool-image-btn');
-        const stickerPicker = document.getElementById('stickerPicker');
-        const imageFileInput = document.getElementById('imageFileInput');
+        //const stickerBtn = document.querySelector('.sticker-btn');
+        // const stickerPicker = document.getElementById('stickerPicker');
+        //const imageBtn = document.querySelector('.image-btn');
+        //const imageFileInput = document.getElementById('imageFileInput');
         const botNameElement = document.getElementById('botName');
         const botAvatar = document.getElementById('botAvatar');
         const botNameInput = document.getElementById('botNameInput');
@@ -2986,11 +2734,6 @@
         const avatarFileInput = document.getElementById('avatarFileInput');
         const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
         const avatarPreview = document.getElementById('avatarPreview');
-
-        // 用户头像相关元素
-        const userAvatarFileInput = document.getElementById('userAvatarFileInput');
-        const uploadUserAvatarBtn = document.getElementById('uploadUserAvatarBtn');
-        const userAvatarPreview = document.getElementById('userAvatarPreview');
 
         // 背景设置相关元素
         const chatBackgroundFileInput = document.getElementById('chatBackgroundFileInput');
@@ -3462,7 +3205,7 @@
 
             } else if (msg.type === 'image') {
                 container.innerHTML =
-                    `<img src="${msg.content}" style="max-width:200px;border-radius:5px;">`;
+                    `< img src="${msg.content}" style="max-width:200px;border-radius:5px;">`;
 
             } else if (msg.type === 'emoji') {
                 container.innerHTML =
@@ -3470,202 +3213,27 @@
 
             } else if (msg.type === 'sticker') {
                 container.innerHTML =
-                    `<img src="${msg.content}" style="max-width:100px;border-radius:5px;">`;
+                    `< img src="${msg.content}" style="max-width:100px;border-radius:5px;">`;
+
+            } else if (msg.type === 'voice') {
+                renderVoiceContent(container, msg);
             }
         }
 
 
         // ==========================
-        // 构建单条消息 DOM（唯一结构）
-        // ==========================
-        function renderSingleMessage(msg, index, currentFriend) {
-            const fragment = document.createDocumentFragment();
-
-            const msgDate = new Date(msg.timestamp);
-            const currentDate = msgDate.toDateString();
-            const currentTime = msgDate.toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-            // ===== 时间分割线（只在需要时插入）=====
-            if (
-                index === 0 ||
-                timeDifferenceInMinutes(
-                    msg.timestamp,
-                    currentFriend.messages[index - 1].timestamp
-                ) >= 30
-            ) {
-                const timeDivider = document.createElement('div');
-                timeDivider.className = 'time-divider';
-
-                const dateText = formatDate(msg.timestamp, lastRenderedDate);
-
-                let text;
-                if (dateText) {
-                    text = `${dateText} ${currentTime}`;
-                    lastRenderedDate = msg.timestamp; // ⭐ 只有显示了日期才更新
-                } else {
-                    text = currentTime;
-                }
-
-                timeDivider.innerHTML = `<span>${text}</span>`;
-                fragment.appendChild(timeDivider);
-            }
-
-            // 1️⃣ 创建消息容器
-            const messageContainer = document.createElement('div');
-            messageContainer.className =
-                `message-container ${msg.sender}-container`;
-
-            /*// ===== 头像合并判断 =====
-            let showAvatar = true;
-
-            if (index > 0) {
-                const prevMsg = currentFriend.messages[index - 1];
-                if (prevMsg.sender === msg.sender) {
-                    showAvatar = false;
-                }
-            } 
-
-            // 2️⃣ 创建头像
-            const avatarDiv = document.createElement('div');
-            avatarDiv.className = `message-avatar ${msg.sender}-avatar`;
-
-            if (showAvatar) {
-                if (msg.sender === 'user') {
-                    if (appData.userAvatarImage) {
-                        const img = document.createElement('img');
-                        img.src = appData.userAvatarImage;
-                        avatarDiv.appendChild(img);
-                    } else {
-                        avatarDiv.textContent = appData.userName.charAt(0);
-                    }
-                } else {
-                    if (currentFriend.avatarImage) {
-                        const img = document.createElement('img');
-                        img.src = currentFriend.avatarImage;
-                        avatarDiv.appendChild(img);
-                    } else {
-                        avatarDiv.textContent =
-                            currentFriend.avatar || currentFriend.name.charAt(0);
-                    }
-                }
-            } else {
-                // ⭐ 关键：隐藏头像但保留占位
-                avatarDiv.style.visibility = 'hidden';
-            } */
-
-            // 2️⃣ 创建头像
-            const avatarDiv = document.createElement('div');
-            avatarDiv.className = `message-avatar ${msg.sender}-avatar`;
-
-            if (msg.sender === 'user') {
-                if (appData.userAvatarImage) {
-                    const img = document.createElement('img');
-                    img.src = appData.userAvatarImage;
-                    avatarDiv.appendChild(img);
-                } else {
-                    avatarDiv.textContent = appData.userName.charAt(0);
-                }
-            } else {
-                if (currentFriend.avatarImage) {
-                    const img = document.createElement('img');
-                    img.src = currentFriend.avatarImage;
-                    avatarDiv.appendChild(img);
-                } else {
-                    avatarDiv.textContent =
-                        currentFriend.avatar || currentFriend.name.charAt(0);
-                }
-            }
-
-            // 3️⃣ 创建 messageDiv（气泡）
-            const messageDiv = document.createElement('div');
-
-            // 4️⃣ 判断是否无气泡
-            const isNoBubble =
-                msg.type === 'image' ||
-                msg.type === 'sticker';
-
-            // 5️⃣ 设置气泡 class
-            messageDiv.className =
-                `message ${msg.sender}-message` +
-                (isNoBubble ? ' no-bubble' : '');
-
-            messageDiv.setAttribute('data-message-id', index);
-
-            // ===== 有引用 =====
-            if (msg.quote) {
-                const messageWithQuote = document.createElement('div');
-                messageWithQuote.className = 'message-with-quote';
-
-                const quotedContent = document.createElement('div');
-                quotedContent.className = 'quoted-content';
-
-                const quoteSender = document.createElement('div');
-                quoteSender.className = 'quote-sender';
-                quoteSender.textContent =
-                    msg.quoteSender ||
-                    (msg.sender === 'user'
-                        ? appData.userName
-                        : currentFriend.name);
-
-                const quoteText = document.createElement('div');
-                quoteText.className = 'quoted-text';
-
-                if (msg.quoteType === 'image' || msg.quoteType === 'sticker') {
-                    const img = document.createElement('img');
-                    img.src = msg.quote;
-                    img.className = 'quoted-image';
-                    quoteText.appendChild(img);
-                } else {
-                    quoteText.textContent =
-                        msg.quote.length > 50
-                            ? msg.quote.substring(0, 50) + '...'
-                            : msg.quote;
-                }
-
-                const mainContent = document.createElement('div');
-                mainContent.className = 'main-content';
-                renderMessageContent(mainContent, msg);
-
-                quotedContent.appendChild(quoteSender);
-                quotedContent.appendChild(quoteText);
-                messageWithQuote.appendChild(quotedContent);
-                messageWithQuote.appendChild(mainContent);
-                messageDiv.appendChild(messageWithQuote);
-
-            } else {
-                // ===== 无引用 =====
-                renderMessageContent(messageDiv, msg);
-            }
-
-            messageDiv.addEventListener('click', handleMessageClick);
-
-            // 6️⃣ 按 sender 组合顺序
-            if (msg.sender === 'user') {
-                messageContainer.appendChild(messageDiv);
-                messageContainer.appendChild(avatarDiv);
-            } else {
-                messageContainer.appendChild(avatarDiv);
-                messageContainer.appendChild(messageDiv);
-            }
-
-            fragment.appendChild(messageContainer);
-            return fragment;
-        }
-
-        // ==========================
-        // 全量渲染（只在初始化 / 切换时用）
+        // 渲染聊天记录（唯一、最终版）
         // ==========================
         function renderChat() {
             chatArea.innerHTML = '';
-            lastRenderedDate = null; // ⭐ 新增：重置日期锚点
             const currentFriend = getCurrentFriend();
 
+            let lastDate = null;
+            let lastTime = null;
 
-            // 背景处理
             const chatBg = document.getElementById('chatBg');
+
+            // 清空旧背景
             chatBg.style.backgroundImage = '';
             chatBg.style.backgroundColor = '';
 
@@ -3680,12 +3248,114 @@
             }
 
             currentFriend.messages.forEach((msg, index) => {
-                const node = renderSingleMessage(msg, index, currentFriend);
-                chatArea.appendChild(node);
+                const msgDate = new Date(msg.timestamp);
+                const currentDate = msgDate.toDateString();
+                const currentTime = msgDate.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                // ==========================
+                // 时间分割线
+                // ==========================
+                if (index === 0 || currentDate !== lastDate) {
+                    const timeDivider = document.createElement('div');
+                    timeDivider.className = 'time-divider';
+                    timeDivider.innerHTML =
+                        `<span>${formatDate(msg.timestamp)} ${currentTime}</span>`;
+                    chatArea.appendChild(timeDivider);
+                    lastDate = currentDate;
+                    lastTime = currentTime;
+
+                } else if (
+                    timeDifferenceInMinutes(
+                        msg.timestamp,
+                        currentFriend.messages[index - 1].timestamp
+                    ) >= 30
+                ) {
+                    const timeDivider = document.createElement('div');
+                    timeDivider.className = 'time-divider';
+                    timeDivider.innerHTML = `<span>${currentTime}</span>`;
+                    chatArea.appendChild(timeDivider);
+                    lastTime = currentTime;
+                }
+
+                // ==========================
+                // 消息容器
+                // ==========================
+                const messageContainer = document.createElement('div');
+                messageContainer.className =
+                    `message-container ${msg.sender}-container`;
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className =
+                    `message ${msg.sender}-message`;
+                messageDiv.setAttribute('data-message-id', index);
+
+                // ==========================
+                // 有引用
+                // ==========================
+                if (msg.quote) {
+                    const messageWithQuote = document.createElement('div');
+                    messageWithQuote.className = 'message-with-quote';
+
+                    const quotedContent = document.createElement('div');
+                    quotedContent.className = 'quoted-content';
+
+                    const quoteSender = document.createElement('div');
+                    quoteSender.className = 'quote-sender';
+                    quoteSender.textContent =
+                        msg.quoteSender ||
+                        (msg.sender === 'user'
+                            ? appData.userName
+                            : currentFriend.name);
+
+                    const quoteText = document.createElement('div');
+                    quoteText.className = 'quoted-text';
+
+                    if (msg.quoteType === 'image' || msg.quoteType === 'sticker') {
+                        const quoteImage = document.createElement('img');
+                        quoteImage.src = msg.quote;
+                        quoteImage.className = 'quoted-image';
+                        quoteText.appendChild(quoteImage);
+                    } else {
+                        quoteText.textContent =
+                            msg.quote.length > 50
+                                ? msg.quote.substring(0, 50) + '...'
+                                : msg.quote;
+                    }
+
+                    const mainContent = document.createElement('div');
+                    mainContent.className = 'main-content';
+
+                    // 👉 唯一内容渲染入口
+                    renderMessageContent(mainContent, msg);
+
+                    quotedContent.appendChild(quoteSender);
+                    quotedContent.appendChild(quoteText);
+                    messageWithQuote.appendChild(quotedContent);
+                    messageWithQuote.appendChild(mainContent);
+                    messageDiv.appendChild(messageWithQuote);
+
+                } else {
+                    // ==========================
+                    // 无引用
+                    // ==========================
+                    renderMessageContent(messageDiv, msg);
+                }
+
+                messageDiv.addEventListener('click', handleMessageClick);
+
+                messageContainer.appendChild(messageDiv);
+                chatArea.appendChild(messageContainer);
             });
 
-            // 全量渲染完，直接滚到底
-            chatArea.scrollTop = chatArea.scrollHeight;
+            // ==========================
+            // 滚动到底部
+            // ==========================
+            setTimeout(() => {
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }, 100);
         }
 
         // 点击消息事件处理
@@ -3714,101 +3384,20 @@
             e.stopPropagation();
         }
 
-        // 计算时间差（分钟）——保持不变
+        // 计算时间差（分钟）
         function timeDifferenceInMinutes(timestamp1, timestamp2) {
             return Math.abs(timestamp1 - timestamp2) / (1000 * 60);
         }
 
-        // 格式化日期（优化版）
-        // 规则：
-        // 1. 新的一天一定显示
-        // 2. 同一年只显示「月日」
-        // 3. 跨年才显示「年月日」
-        function formatDate(timestamp, lastTimestamp) {
+        // 格式化日期
+        function formatDate(timestamp) {
             const date = new Date(timestamp);
-
             const year = date.getFullYear();
             const month = date.getMonth() + 1;
             const day = date.getDate();
 
-            // 没有上一条时间（会话起点）→ 显示完整年月日
-            if (!lastTimestamp) {
-                return `${year}年${month}月${day}日`;
-            }
-
-            const lastDate = new Date(lastTimestamp);
-
-            // 判断是否新的一天
-            const isNewDay =
-                year !== lastDate.getFullYear() ||
-                date.getMonth() !== lastDate.getMonth() ||
-                day !== lastDate.getDate();
-
-            // 不是新的一天 → 不显示日期
-            if (!isNewDay) {
-                return null;
-            }
-
-            // 新的一天，但同一年 → 只显示 月日
-            if (year === lastDate.getFullYear()) {
-                return `${month}月${day}日`;
-            }
-
-            // 跨年 → 显示 年月日
             return `${year}年${month}月${day}日`;
         }
-
-        //tool弹窗。
-        const panel = document.getElementById("tool-panel");
-        const dragHandle = document.getElementById("toolPanelDrag");
-        const toggleBtn = document.getElementById("toolToggle");
-
-        /* 显示 / 隐藏 */
-        toggleBtn.addEventListener("click", () => {
-            panel.classList.toggle("hidden");
-        });
-
-        /* ===== 仅头部拖拽 ===== */
-
-        let isDragging = false;
-        let startX = 0;
-        let startY = 0;
-
-        dragHandle.addEventListener("pointerdown", (e) => {
-            isDragging = true;
-
-            // 用真实视觉位置计算（不要用 offsetLeft 的旧值）
-            const rect = panel.getBoundingClientRect();
-
-            startX = e.clientX - rect.left;
-            startY = e.clientY - rect.top;
-
-            // ⭐ 核心修复：从 bottom 定位 → top/left 定位
-            panel.style.left = rect.left + "px";
-            panel.style.top = rect.top + "px";
-            panel.style.bottom = "auto";      // ✅ 必须清掉，不然会拉伸高度
-            panel.style.transform = "none";   // ✅ 清掉 translateX(-50%)
-
-            dragHandle.setPointerCapture(e.pointerId);
-
-            panel.style.cursor = "grabbing";
-        });
-
-        dragHandle.addEventListener("pointermove", (e) => {
-            if (!isDragging) return;
-
-            panel.style.left = `${e.clientX - startX}px`;
-            panel.style.top = `${e.clientY - startY}px`;
-        });
-
-        dragHandle.addEventListener("pointerup", () => {
-            isDragging = false;
-            panel.style.cursor = "default";
-        });
-
-        dragHandle.addEventListener("pointercancel", () => {
-            isDragging = false;
-        });
 
         // 渲染设置界面
         function renderSettings() {
@@ -3835,23 +3424,6 @@
                 avatarPreview.innerHTML = `<img src="${currentFriend.avatarImage}" style="width: 100%; height: 100%; border-radius: 50%;">`;
             } else {
                 avatarPreview.textContent = currentFriend.avatar || currentFriend.name.charAt(0);
-            }
-
-            // ===== 用户头像预览（强制清空法）=====
-            userAvatarPreview.innerHTML = '';
-            userAvatarPreview.textContent = '';
-
-            if (appData.userAvatarImage) {
-                const img = document.createElement('img');
-                img.src = appData.userAvatarImage;
-                img.style.width = '100%';
-                img.style.height = '100%';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '50%';
-
-                userAvatarPreview.appendChild(img);
-            } else {
-                userAvatarPreview.textContent = appData.userName.charAt(0);
             }
 
             // 更新背景预览
@@ -3920,9 +3492,114 @@
             });
         }
 
+        //开始录音。
+        async function startVoiceRecord() {
+            try {
+                recordStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                mediaRecorder = new MediaRecorder(recordStream);
+                audioChunks = [];
+                recordStartTime = Date.now();
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data && e.data.size > 0) {
+                        audioChunks.push(e.data);
+                    }
+                };
+
+                mediaRecorder.start();
+
+            } catch (err) {
+                console.error('麦克风权限被拒绝', err);
+                isRecording = false;
+                alert('需要麦克风权限才能录音');
+            }
+        }
+
+
+        //停止录音。
+        function stopVoiceRecord() {
+            return new Promise((resolve, reject) => {
+                if (!mediaRecorder) {
+                    reject('mediaRecorder 不存在');
+                    return;
+                }
+
+                mediaRecorder.onstop = async () => {
+                    try {
+                        const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const base64Audio = await blobToBase64(blob);
+
+                        const duration = Math.max(
+                            1,
+                            Math.round((Date.now() - recordStartTime) / 1000)
+                        );
+
+                        // ✅ 彻底释放麦克风
+                        if (recordStream) {
+                            recordStream.getTracks().forEach(track => track.stop());
+                            recordStream = null;
+                        }
+
+                        mediaRecorder = null;
+                        audioChunks = [];
+
+                        resolve({
+                            sender: 'user',
+                            type: 'voice',
+                            content: {
+                                audio: base64Audio, // ✅ 永久可用
+                                duration
+                            },
+                            timestamp: Date.now()
+                        });
+
+                    } catch (err) {
+                        reject(err);
+                    }
+                };
+
+                mediaRecorder.stop();
+            });
+        }
+
+        //点击/生成语音对象消息。
+        voiceBtn.addEventListener('click', async () => {
+            if (!isRecording) {
+                isRecording = true;
+                await startVoiceRecord();
+            } else {
+                isRecording = false;
+                try {
+                    const msg = await stopVoiceRecord();
+
+                    const friend = appData.friends[appData.currentFriendId];
+                    friend.messages.push(msg);
+
+                    await saveData();
+                    addMessageToChat(msg);
+
+                    +           // ✅ 让语音消息也进入回复逻辑
+                        +           createReplyTask(friend.id, msg);
+
+                } catch (e) {
+                    console.warn('录音失败', e);
+                }
+            }
+        });
+
+        //转格式。
+        function blobToBase64(blob) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+        }
+
         // 发送消息
         async function sendMessage(content, type = 'text') {
-            if (!content.trim() && type !== 'image' && type !== 'sticker' && type !== 'sticker') return;
+            if (!content.trim() && type !== 'image' && type !== 'sticker' && type !== 'sticker' && type !== 'voice') return;
 
             const currentFriend = getCurrentFriend();
 
@@ -4149,20 +3826,168 @@
             }
         }
 
-        //发送消息。
+        // 添加消息到聊天区域
         function addMessageToChat(msg) {
-            const currentFriend = getCurrentFriend();
-            const index = currentFriend.messages.length - 1;
+            const messageContainer = document.createElement('div');
+            messageContainer.className = `message-container ${msg.sender}-container`;
 
-            // ✅ 直接复用已有的单条渲染逻辑
-            const node = renderSingleMessage(msg, index, currentFriend);
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${msg.sender}-message`;
 
-            chatArea.appendChild(node);
+            // ==========================
+            // 有引用的情况
+            // ==========================
+            if (msg.quote) {
+                const messageWithQuote = document.createElement('div');
+                messageWithQuote.className = 'message-with-quote';
 
-            // ✅ 发送消息后自动滚到底部
-            requestAnimationFrame(() => {
+                const quotedContent = document.createElement('div');
+                quotedContent.className = 'quoted-content';
+
+                const quoteSender = document.createElement('div');
+                quoteSender.className = 'quote-sender';
+                quoteSender.textContent =
+                    msg.quoteSender ||
+                    (msg.sender === 'user'
+                        ? appData.userName
+                        : getCurrentFriend().name);
+
+                const quoteText = document.createElement('div');
+                quoteText.className = 'quoted-text';
+
+                if (msg.quoteType === 'image' || msg.quoteType === 'sticker') {
+                    const quoteImage = document.createElement('img');
+                    quoteImage.src = msg.quote;
+                    quoteImage.className = 'quoted-image';
+                    quoteText.appendChild(quoteImage);
+                } else {
+                    quoteText.textContent =
+                        msg.quote.length > 50
+                            ? msg.quote.substring(0, 50) + '...'
+                            : msg.quote;
+                }
+
+                const mainContent = document.createElement('div');
+                mainContent.className = 'main-content';
+
+                // 👉 内容类型判断（重点在这里）
+                if (msg.type === 'text') {
+                    mainContent.textContent = msg.content;
+                } else if (msg.type === 'image') {
+                    mainContent.innerHTML =
+                        `<img src="${msg.content}" style="max-width:200px;border-radius:5px;">`;
+                } else if (msg.type === 'emoji') {
+                    mainContent.innerHTML =
+                        `<div style="font-size:13px;line-height:1.4;">${msg.content}</div>`;
+                } else if (msg.type === 'sticker') {
+                    mainContent.innerHTML =
+                        `<img src="${msg.content}" style="max-width:100px;border-radius:5px;">`;
+                } else if (msg.type === 'voice') {
+                    renderVoiceContent(mainContent, msg);
+                }
+
+                quotedContent.appendChild(quoteSender);
+                quotedContent.appendChild(quoteText);
+                messageWithQuote.appendChild(quotedContent);
+                messageWithQuote.appendChild(mainContent);
+                messageDiv.appendChild(messageWithQuote);
+
+                // ==========================
+                // 无引用的情况
+                // ==========================
+            } else {
+                if (msg.type === 'text') {
+                    messageDiv.innerHTML = `<div>${msg.content}</div>`;
+                } else if (msg.type === 'image') {
+                    messageDiv.innerHTML =
+                        `<img src="${msg.content}" style="max-width:200px;border-radius:5px;">`;
+                } else if (msg.type === 'emoji') {
+                    messageDiv.innerHTML =
+                        `<div style="font-size:13px;line-height:1.4;">${msg.content}</div>`;
+                } else if (msg.type === 'sticker') {
+                    messageDiv.innerHTML =
+                        `<img src="${msg.content}" style="max-width:100px;border-radius:5px;">`;
+                } else if (msg.type === 'voice') {
+                    renderVoiceContent(messageDiv, msg);
+                }
+            }
+
+            // 添加点击事件监听
+            messageDiv.addEventListener('click', handleMessageClick);
+
+            messageContainer.appendChild(messageDiv);
+            chatArea.appendChild(messageContainer);
+
+            // 确保滚动到底部
+            setTimeout(() => {
                 chatArea.scrollTop = chatArea.scrollHeight;
+            }, 50);
+        }
+
+        // 添加语音（最终稳定版）
+        function renderVoiceContent(container, msg) {
+            const voiceContent = document.createElement('div');
+            voiceContent.className = 'voice-content';
+
+            // 👇 固定长度（不再随秒数变化）
+            voiceContent.style.width = '85px';
+
+
+            /* ===== 秒数（左） ===== */
+            const duration = document.createElement('span');
+            duration.className = 'voice-duration';
+            duration.textContent = msg.content.duration + '"';
+
+            /* ===== 微信声波（右，CSS 镜像朝左 ((()）===== */
+            const icon = document.createElement('span');
+            icon.className = 'voice-icon';
+            icon.innerHTML = `
+        <svg class="voice-svg flip-left" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="wave w1" d="M3 12a2 2 0 0 1 0 0"></path>
+            <path class="wave w2" d="M6 9a4 4 0 0 1 0 6"></path>
+            <path class="wave w3" d="M9 6a7 7 0 0 1 0 12"></path>
+        </svg>
+    `;
+
+            /* ===== audio ===== */
+            const audio = document.createElement('audio');
+            audio.preload = 'none';
+
+            if (
+                msg.content &&
+                typeof msg.content.audio === 'string' &&
+                msg.content.audio.startsWith('data:audio')
+            ) {
+                audio.src = msg.content.audio;
+            } else {
+                voiceContent.classList.add('voice-invalid');
+            }
+
+            /* ===== DOM 顺序：秒数 → 声波 ===== */
+            voiceContent.appendChild(duration);
+            voiceContent.appendChild(icon);
+            voiceContent.appendChild(audio);
+
+            /* ===== 点击播放 ===== */
+            voiceContent.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!audio.src) return;
+
+                if (audio.paused) {
+                    audio.play();
+                    voiceContent.classList.add('playing');
+                } else {
+                    audio.pause();
+                    voiceContent.classList.remove('playing');
+                }
             });
+
+            /* ===== 播放结束 ===== */
+            audio.addEventListener('ended', () => {
+                voiceContent.classList.remove('playing');
+            });
+
+            container.appendChild(voiceContent);
         }
 
         //输入栏变化高度
@@ -4186,6 +4011,7 @@
 
         // 页面初始化时也跑一次（防止回填内容）
         window.addEventListener('load', adjustTextareaHeight);
+
         // 清除所有聊天记录
         function clearChatHistory() {
             const currentFriend = getCurrentFriend();
@@ -4393,7 +4219,7 @@
             }
         }
 
-        // ✅ 高清头像压缩（3x，防糊）
+        // 压缩头像图片 - 使用裁剪而非缩放
         function compressAvatar(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -4402,42 +4228,39 @@
                     const img = new Image();
 
                     img.onload = function () {
-                        const SIZE = 144; // ⭐ 3x 尺寸（48 × 3）
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
 
-                        canvas.width = SIZE;
-                        canvas.height = SIZE;
+                        // 设置画布尺寸
+                        canvas.width = 48;
+                        canvas.height = 48;
 
+                        // 计算裁剪区域，保持图片比例
                         const imgAspect = img.width / img.height;
-                        let sx, sy, sw, sh;
+                        const canvasAspect = 1; // 1:1 比例
 
-                        if (imgAspect > 1) {
-                            // 横图
-                            sh = img.height;
-                            sw = img.height;
-                            sx = (img.width - sw) / 2;
-                            sy = 0;
+                        let drawWidth, drawHeight, offsetX, offsetY;
+
+                        if (imgAspect > canvasAspect) {
+                            // 图片更宽，按高度裁剪
+                            drawHeight = img.height;
+                            drawWidth = img.height * canvasAspect;
+                            offsetX = (img.width - drawWidth) / 2;
+                            offsetY = 0;
                         } else {
-                            // 竖图
-                            sw = img.width;
-                            sh = img.width;
-                            sx = 0;
-                            sy = (img.height - sh) / 2;
+                            // 图片更高，按宽度裁剪
+                            drawWidth = img.width;
+                            drawHeight = img.width / canvasAspect;
+                            offsetX = 0;
+                            offsetY = (img.height - drawHeight) / 2;
                         }
 
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.imageSmoothingQuality = 'high';
+                        // 绘制并裁剪图片
+                        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight, 0, 0, 48, 48);
 
-                        ctx.drawImage(
-                            img,
-                            sx, sy, sw, sh,
-                            0, 0, SIZE, SIZE
-                        );
-
-                        // ✅ 用 PNG，不要 JPEG（头像边缘会更干净）
-                        const dataUrl = canvas.toDataURL('image/png');
-                        resolve(dataUrl);
+                        // 转换为压缩后的base64
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                        resolve(compressedDataUrl);
                     };
 
                     img.onerror = reject;
@@ -4449,7 +4272,7 @@
             });
         }
 
-        // 上传角色头像
+        // 上传头像
         async function uploadAvatar(file) {
             if (!file) return;
 
@@ -4468,27 +4291,6 @@
             } catch (error) {
                 console.error("头像压缩失败:", error);
                 alert("头像上传失败，请重试");
-            }
-        }
-
-        async function uploadUserAvatar(file) {
-            if (!file) return;
-
-            try {
-                const compressedAvatar = await compressAvatar(file);
-                appData.userAvatarImage = compressedAvatar;
-
-                const saveResult = await saveData();
-                if (saveResult) {
-                    renderSettings();
-                    renderChat();
-                    alert("用户头像上传成功！");
-                } else {
-                    alert("用户头像上传失败，请重试");
-                }
-            } catch (error) {
-                console.error("用户头像压缩失败:", error);
-                alert("用户头像上传失败，请重试");
             }
         }
 
@@ -4734,38 +4536,28 @@
 
         closeSettings.addEventListener('click', closePanel);
 
-        // === Sticker ===
-        if (stickerBtn && stickerPicker) {
-            stickerBtn.addEventListener('click', () => {
-                stickerPicker.classList.toggle('hidden');
-            });
-        }
+        // stickerBtn.addEventListener('click', () => {
+        //    stickerPicker.classList.toggle('hidden');
+        // });
 
-        // === Image ===
-        if (imageBtn && imageFileInput) {
-            imageBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // 防止被拖拽逻辑吃掉
-                imageFileInput.click();
-            });
-        }
+        //imageBtn.addEventListener('click', () => {
+        //   imageFileInput.click();
+        // });
 
-        // === Image file change ===
-        if (imageFileInput) {
-            imageFileInput.addEventListener('change', async (e) => {
-                const files = e.target.files;
-                if (!files || files.length === 0) return;
+        // imageFileInput.addEventListener('change', async (e) => {
+        //  const files = e.target.files;
+        // if (files && files.length > 0) {
+        //    const file = files[0];
+        //    const reader = new FileReader();
 
-                const file = files[0];
-                const reader = new FileReader();
+        //   reader.onload = async (event) => {
+        //      await sendMessage(event.target.result, 'image');
+        //     imageFileInput.value = '';
+        // };
 
-                reader.onload = async (event) => {
-                    await sendMessage(event.target.result, 'image');
-                    imageFileInput.value = '';
-                };
-
-                reader.readAsDataURL(file);
-            });
-        }
+        //  reader.readAsDataURL(file);
+        // }
+        //  });
 
         userNameInput.addEventListener('change', () => {
             appData.userName = userNameInput.value;
@@ -4984,7 +4776,7 @@
             }
         });
 
-        // 角色头像上传事件
+        // 头像上传事件
         uploadAvatarBtn.addEventListener('click', () => {
             avatarFileInput.click();
         });
@@ -4995,19 +4787,6 @@
                 const file = files[0];
                 uploadAvatar(file);
                 avatarFileInput.value = '';
-            }
-        });
-
-        uploadUserAvatarBtn.addEventListener('click', () => {
-            userAvatarFileInput.click();
-        });
-
-        userAvatarFileInput.addEventListener('change', (e) => {
-            const files = e.target.files;
-            if (files && files.length > 0) {
-                const file = files[0];
-                uploadUserAvatar(file);
-                userAvatarFileInput.value = '';
             }
         });
 
